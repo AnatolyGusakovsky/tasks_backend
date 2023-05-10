@@ -1,4 +1,4 @@
-import {get_all_tasks_DB, get_task_DB, save, remove_task, update} from "../models/tasks.dao.js";
+import {get_all_tasks_DB, get_task_DB, remove_task, save, update} from "../models/tasks.dao.js";
 
 const create_task = async ({
                              id,
@@ -15,8 +15,8 @@ const create_task = async ({
   return await save(task);
 }
 
-const get_all_tasks = async () => {
-  return await get_all_tasks_DB();
+const get_all_tasks = async (ctx) => {
+  ctx.body = await get_all_tasks_DB()
 }
 
 const get_task = async id => {

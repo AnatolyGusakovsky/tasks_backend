@@ -7,9 +7,7 @@ const router = new Router({
   prefix: '/tasks'
 })
 
-router.get('/', async ctx => {
-  ctx.body = await get_all_tasks();
-})
+router.get('/', get_all_tasks)
 
 router.post('/', async ctx => {
   let task = ctx.request.body;
