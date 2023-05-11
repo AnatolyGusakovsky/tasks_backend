@@ -9,12 +9,7 @@ const router = new Router({
 
 router.get('/', get_all_tasks)
 
-router.post('/', async ctx => {
-  let task = ctx.request.body;
-  task = await create_task(task);
-  ctx.response.status = 200;
-  ctx.body = task;
-})
+router.post('/', create_task)
 
 router.get('/:id', async ctx => {
   const id = ctx.params.id;

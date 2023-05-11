@@ -15,11 +15,11 @@ const save = async ({
     is_completed,
     is_deleted
   });
-  let result;
+  let task_saved;
   db_resp.acknowledged ?
-    result = `Task saved. InsertedId: ${db_resp.insertedId}`
-    : result = `Something went wrong on task saving`;
-  return result
+    task_saved = true
+    : task_saved = false;
+  return task_saved
 }
 
 const get_all_tasks_DB = async () => {

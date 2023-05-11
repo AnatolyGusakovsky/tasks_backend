@@ -1,18 +1,15 @@
 import {get_all_tasks_DB, get_task_DB, remove_task, save, update} from "../models/tasks.dao.js";
 
-const create_task = async ({
-                             id,
-                             text,
-                             is_completed,
-                             is_deleted
-                           }) => {
-  const task = {
-    id,
-    text,
-    is_completed,
-    is_deleted
+const create_task = async (ctx) => {
+  const task = ctx.request.body;
+  const task_saved_successfully = await save(task);
+  if (task_saved_successfully) {
+    ctx.response.status = 200;
+    ctx.body = task;
+  } else {
+    ctx.response.status = 500;
+    ctx.body = 'Error on task saving';
   }
-  return await save(task);
 }
 
 const get_all_tasks = async (ctx) => {
