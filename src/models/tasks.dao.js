@@ -31,36 +31,39 @@ const get_task_DB = async (id) => {
   return await tasks.findOne({id: id}) || 'No tasks found!';
 }
 
-const update = async ({
-                        id,
-                        text,
-                        is_completed,
-                        is_deleted
-                      }) => {
+const update_task_DB = async ({
+                                id,
+                                text,
+                                is_completed,
+                                is_deleted
+                              }) => {
   const db_resp = await tasks.replaceOne({id: id}, {
     id,
     text,
     is_completed,
     is_deleted
   });
-  let result;
-  db_resp.acknowledged ?
-    result = `Task updated successfully`
-    : result = `Something went wrong on task updating`;
-  return result
+// todo: 1. now id is getting from body, but need to be getting from url params
+  //todo: 2. prevent editing id
+
+  let task_updated;
+  db_resp.modifiedCount > 0 ?
+    task_updated = true
+    : task_updated = false;
+  return task_updated
 }
 
-const remove_task = async id => {
+const remove_task_DB = async id => {
   const db_resp = await tasks.deleteOne({id: id});
 
-  if(db_resp.deletedCount === 0)
+  if (db_resp.deletedCount === 0)
     return 'Task with provided id not found. Deletion failed.'
 
-  let result;
+  let task_removed;
   db_resp.acknowledged ?
-    result = `Task deleted successfully`
-    : result = `Something went wrong on task deletion`;
-  return result
+    task_removed = true
+    : task_removed = false;
+  return task_removed
 }
 
-export {save, get_all_tasks_DB, get_task_DB, update, remove_task}
+export {save, get_all_tasks_DB, get_task_DB, update_task_DB, remove_task_DB}
