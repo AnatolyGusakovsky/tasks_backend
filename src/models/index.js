@@ -1,6 +1,6 @@
 import {MongoClient, ServerApiVersion} from 'mongodb';
 
-const uri = 'mongodb://0.0.0.0:27017'
+const uri = 'mongodb://0.0.0.0:27017' // for Windows 0.0.0.0 host is required
 const client = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,
