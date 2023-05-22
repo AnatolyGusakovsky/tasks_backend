@@ -35,9 +35,9 @@ const delete_task = async ctx => {
 }
 
 const update_task = async ctx => {
-  // const id = ctx.params.id;
+  const id = ctx.params.id;
   let task = ctx.request.body;
-  const task_updated = await update_task_DB(task);
+  const task_updated = await update_task_DB(id, task);
   if (task_updated) {
     ctx.response.status = 200;
     ctx.body = 'Task updated successfully';
