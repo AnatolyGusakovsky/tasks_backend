@@ -3,23 +3,9 @@ import {client} from './index.js';
 const tasks = client.db('koa').collection('tasks');
 
 
-const save = async ({
-                      id,
-                      text,
-                      is_completed,
-                      is_deleted
-                    }) => {
-  const db_resp = await tasks.insertOne({
-    id,
-    text,
-    is_completed,
-    is_deleted
-  });
-  let task_saved;
-  db_resp.acknowledged ?
-    task_saved = true
-    : task_saved = false;
-  return task_saved
+const save = async (task_obj) => {
+  const db_resp = await tasks.insertOne(task_obj);
+  return db_resp.acknowledged;
 }
 
 const get_all_tasks_DB = async () => {
@@ -32,15 +18,8 @@ const get_task_DB = async (id) => {
 }
 
 const update_task_DB = async (id, fields_to_update_obj) => {
-  const db_resp = await tasks.updateOne({id: id}, fields_to_update_obj);
-// todo: 1. now id is getting from body, but need to be getting from url params
-  //todo: 2. prevent editing id
-
-  let task_updated;
-  db_resp.modifiedCount > 0 ?
-    task_updated = true
-    : task_updated = false;
-  return task_updated
+  const db_resp = await tasks.updateOne({id: id}, {$set: fields_to_update_obj});
+  return db_resp.modifiedCount > 0;
 }
 
 const remove_task_DB = async id => {

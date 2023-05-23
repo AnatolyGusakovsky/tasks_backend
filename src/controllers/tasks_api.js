@@ -45,8 +45,6 @@ const update_task = async ctx => {
     ctx.response.status = 500;
     ctx.body = 'Error while updating task';
   }
-
-
 }
 
 export {create_task, get_all_tasks, get_task, delete_task, update_task}
