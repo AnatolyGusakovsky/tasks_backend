@@ -18,8 +18,20 @@ const get_task_DB = async (id) => {
 }
 
 const update_task_DB = async (id, fields_to_update_obj) => {
-  const db_resp = await tasks.updateOne({id: id}, {$set: fields_to_update_obj});
-  return db_resp.modifiedCount > 0;
+  const options = {
+    returnDocument: 'after',
+    projection: {}
+  };
+
+  const result = await tasks.findOneAndUpdate({ id: id }, { $set: fields_to_update_obj }, options);
+
+  if (result && result.value) {
+    return result.value;
+  } else if (result && !result.value) {
+    throw new Error(`Task with ID ${id} not found`);
+  } else {
+    throw new Error(`Failed to update the task with id ${id}`);
+  }
 }
 
 const remove_task_DB = async id => {

@@ -2,7 +2,7 @@ import {create_task, delete_task, get_all_tasks, get_task, update_task} from "..
 import Router from "@koa/router";
 
 const router = new Router({
-  prefix: '/tasks'
+  prefix: '/api/tasks'
 })
 
 router.get('/', get_all_tasks)
