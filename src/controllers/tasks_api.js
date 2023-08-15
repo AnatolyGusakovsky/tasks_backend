@@ -1,5 +1,10 @@
 import {get_all_tasks_DB, get_task_DB, remove_task_DB, save, update_task_DB} from "../models/tasks.dao.js";
-
+import {isValidTask} from "./validation_helper.js";
+// todo: add payload check by following schema:
+// {  id,
+//   text,
+//   is_completed,
+//   is_deleted }
 const create_task = async (ctx) => {
   const task = ctx.request.body;
   const task_saved = await save(task);
@@ -37,13 +42,31 @@ const delete_task = async ctx => {
 const update_task = async ctx => {
   const id = ctx.params.id;
   let task = ctx.request.body;
-  const task_updated = await update_task_DB(id, task);
-  if (task_updated) {
+
+  if (!isValidTask(task)) {
+    ctx.response.status = 400;
+    ctx.body = { message: "Invalid task format" };
+    return;
+  }
+
+  if (id !== task.id) {
+    ctx.response.status = 400;
+    ctx.body = { message: "Mismatched IDs" };
+    return;
+  }
+
+  try {
+    const updatedTask = await update_task_DB(id, task);
     ctx.response.status = 200;
-    ctx.body = 'Task updated successfully';
-  } else {
-    ctx.response.status = 500;
-    ctx.body = 'Error while updating task';
+    ctx.body = updatedTask;
+  } catch (error) {
+    if (error.message.includes("not found")) {
+      ctx.response.status = 404;
+      ctx.body = { message: error.message };
+    } else {
+      ctx.response.status = 500;
+      ctx.body = { message: "Internal Server Error" };
+    }
   }
 }
 
