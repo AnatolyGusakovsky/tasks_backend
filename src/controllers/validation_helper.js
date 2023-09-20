@@ -1,8 +1,16 @@
-export const validateTask = (task) => {
+export const validateTask = (task, method = 'POST') => {
   let error_message = "";
+  if (method === 'PUT') {
+    if (task.hasOwnProperty("id"))
+      error_message += "Id should not be present in payload, put it to url: tasks/${id}. "
+  }
+  else if(method === 'POST'){
+    if (!task.hasOwnProperty("id"))
+      error_message += "'id' property should be present in payload. "
+    if (typeof task.id !== "string")
+      error_message += "'id' property should be string. "
+  }
 
-  if (task.hasOwnProperty("id"))
-    error_message += "Id should not be present in payload, put it to url: tasks/${id}. "
   if (!task.hasOwnProperty("text"))
     error_message += "Missed 'text' property. "
   if (!task.hasOwnProperty("is_completed"))
