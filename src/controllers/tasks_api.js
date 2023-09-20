@@ -6,16 +6,19 @@ import {
   update_task_DB
 } from "../models/tasks.dao.js";
 import {validateTask} from "./validation_helper.js";
-// todo: add payload check by following schema:
-// {  id,
-//   text,
-//   is_completed,
-//   is_deleted }
+
 const create_task = async (ctx) => {
   const task = ctx.request.body;
+  const validation = validateTask(task, 'POST')
+
+  if (!validation.isValid) {
+    ctx.response.status = 400;
+    ctx.body = {message: validation.error_message};
+    return;
+  }
   const task_saved = await save(task);
   if (task_saved) {
-    ctx.response.status = 200;
+    ctx.response.status = 201;
     ctx.body = task;
   } else {
     ctx.response.status = 500;
@@ -48,7 +51,7 @@ const delete_task = async ctx => {
 const update_task = async ctx => {
   const id = ctx.params.id;
   let task = ctx.request.body;
-  const validation = validateTask(task)
+  const validation = validateTask(task, 'PUT')
 
   if (!validation.isValid) {
     ctx.response.status = 400;
