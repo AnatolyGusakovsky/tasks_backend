@@ -13,7 +13,7 @@
     "@koa/cors": "^4.0.0",
     "@koa/router": "^12.0.0",
     "koa": "^2.14.1",
-    "mongodb": "^5.2.0"
+    "mongodb": "^5.9.2"
   },
   "devDependencies": {
     "koa-bodyparser": "^4.4.0"
