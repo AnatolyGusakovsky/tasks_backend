@@ -4,10 +4,10 @@ import {
   remove_task_DB,
   save,
   update_task_DB
-} from "../models/tasks.dao.js";
-import {validateTask} from "./validation_helper.js";
+} from "../models/tasks.dao";
+import {validateTask} from "./validation_helper";
 
-const create_task = async (ctx) => {
+const create_task = async (ctx:any) => {
   const task = ctx.request.body;
   const validation = validateTask(task, 'POST')
 
@@ -26,16 +26,16 @@ const create_task = async (ctx) => {
   }
 }
 
-const get_all_tasks = async ctx => {
+const get_all_tasks = async (ctx: any) => {
   ctx.body = await get_all_tasks_DB()
 }
 
-const get_task = async ctx => {
+const get_task = async (ctx: any) => {
   const id = ctx.params.id;
   ctx.body = await get_task_DB(id);
 }
 
-const delete_task = async ctx => {
+const delete_task = async (ctx: any) => {
   const id = ctx.params.id;
 
   let task_removed = await remove_task_DB(id);
@@ -48,7 +48,8 @@ const delete_task = async ctx => {
   }
 }
 
-const update_task = async ctx => {
+const update_task = async (ctx: any) => {
+  console.log('ctx', ctx)
   const id = ctx.params.id;
   let task = ctx.request.body;
   const validation = validateTask(task, 'PUT')
@@ -63,14 +64,9 @@ const update_task = async ctx => {
     const updatedTask = await update_task_DB(id, task);
     ctx.response.status = 200;
     ctx.body = updatedTask;
-  } catch (error) {
-    if (error.message.includes("not found")) {
+  } catch (error:any) {
       ctx.response.status = 404;
       ctx.body = {message: error.message};
-    } else {
-      ctx.response.status = 500;
-      ctx.body = {message: "Internal Server Error"};
-    }
   }
 }
 
