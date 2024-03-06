@@ -1,4 +1,4 @@
-import {create_task, delete_task, get_all_tasks, get_task, update_task} from "../controllers/tasks_api.js";
+import {create_task, delete_task, get_all_tasks, get_task, update_task} from "../controllers/tasks_api";
 import Router from "@koa/router";
 
 const router = new Router({

@@ -1,8 +1,8 @@
 import Koa from 'koa';
-import {router} from "./routes/tasks_routes.js";
+import {router} from "./routes/tasks_routes";
 import bodyParser from 'koa-bodyparser';
 import cors from '@koa/cors';
-import {PORT} from "./config.js";
+import {PORT} from "./config";
 
 
 const app = new Koa();

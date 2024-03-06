@@ -1,4 +1,4 @@
-export const validateTask = (task, method = 'POST') => {
+export const validateTask = (task:any, method = 'POST') => {
   let error_message = "";
   if (method === 'PUT') {
     if (task.hasOwnProperty("id"))
