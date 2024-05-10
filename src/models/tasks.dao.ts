@@ -10,12 +10,13 @@ const save = async (task_obj:any) => {
 }
 
 const get_all_tasks_DB = async () => {
-  const cursor = await tasks.find();
+  const cursor = await tasks.find({}, { projection: { _id: 0 } });
   return cursor.toArray();
 }
 
-const get_task_DB = async (id:string) => {
-  return await tasks.findOne({id: id}) || 'No tasks found!';
+const get_task_DB = async (id: string) => {
+  const task = await tasks.findOne({id: id}, { projection: { _id: 0 } });
+  return task || 'No task found!';
 }
 
 const update_task_DB = async (id:string, fields_to_update_obj:any) => {
