@@ -49,7 +49,6 @@ const delete_task = async (ctx: any) => {
 }
 
 const update_task = async (ctx: any) => {
-  console.log('ctx', ctx)
   const id = ctx.params.id;
   let task = ctx.request.body;
   const validation = validateTask(task, 'PUT')
